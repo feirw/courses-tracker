@@ -49,6 +49,11 @@ const rows = [
   [null,'74TEK003',6,'Παιδαγωγική Ψυχολογία','ΕΛ','Εαρινό εξάμηνο'],
   [null,'74ΤΕΚ228',6,'Το Ψηφιακό Παιχνίδι ως Νέος Γραμματισμός','ΕΛ','Εαρινό εξάμηνο'],
   [6,'82517',5,'Ψηφιακά Παιχνίδια, Εικονικοί Κόσμοι και Μάθηση: Έρευνα και Εφαρμογές','ΕΛ'],
+  // Πρακτική άσκηση και πτυχιακή εργασία
+  [5,'ΠΡΑΚ1',8,'Πρακτική 1','ΠΡ','5ο ή 7ο εξάμηνο',[5,7]],
+  [6,'ΠΡΑΚ2',8,'Πρακτική 2','ΠΡ','6ο ή 8ο εξάμηνο',[6,8]],
+  [5,'ΠΤΥΧ1',8,'Πτυχιακή 1','ΠΤ','5ο ή 7ο εξάμηνο',[5,7]],
+  [6,'ΠΤΥΧ2',8,'Πτυχιακή 2','ΠΤ','6ο ή 8ο εξάμηνο',[6,8]],
 ]
 
 export const typeLabels = {
@@ -59,19 +64,21 @@ export const typeLabels = {
   ΓΠ: 'Γενικής παιδείας',
   Project: 'Project',
   ΕΛ: 'Ελεύθερο μάθημα',
+  ΠΡ: 'Πρακτική άσκηση',
+  ΠΤ: 'Πτυχιακή εργασία',
 }
 
-export const courses = rows.map(([offeredSemester, code, ects, title, type, customSemesterLabel], index) => ({
+export const courses = rows.map(([offeredSemester, code, ects, title, type, customSemesterLabel, availableSemesters], index) => ({
   id: `${offeredSemester ?? customSemesterLabel}-${code}-${index}`,
   offeredSemester,
   semesterLabel: customSemesterLabel || `${offeredSemester}ο εξάμηνο`,
-  semesterFilter: offeredSemester
+  semesterFilters: availableSemesters?.map(String) || [offeredSemester
     ? String(offeredSemester)
     : customSemesterLabel.startsWith('Χειμερινό')
       ? 'winter'
       : customSemesterLabel.startsWith('Εαρινό')
         ? 'spring'
-        : 'annual',
+        : 'annual'],
   defaultSemester: offeredSemester || (customSemesterLabel.startsWith('Εαρινό') ? 2 : 1),
   code,
   ects,

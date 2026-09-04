@@ -128,7 +128,7 @@ export default function App() {
     const term = search.trim().toLocaleLowerCase('el')
     return courses.filter((course) => (
       !plan[course.id]
-      && (semesterFilter === 'all' || course.semesterFilter === semesterFilter)
+      && (semesterFilter === 'all' || course.semesterFilters.includes(semesterFilter))
       && (!term || course.title.toLocaleLowerCase('el').includes(term))
     ))
   }, [plan, search, semesterFilter])
