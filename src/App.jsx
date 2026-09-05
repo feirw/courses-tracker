@@ -115,6 +115,7 @@ export default function App() {
   const [plan, setPlan] = useState(loadPlan)
   const [search, setSearch] = useState('')
   const [semesterFilter, setSemesterFilter] = useState('all')
+  const [typeFilter, setTypeFilter] = useState('all')
   const [saved, setSaved] = useState(false)
   const scrollFrame = useRef(null)
 
@@ -129,9 +130,10 @@ export default function App() {
     return courses.filter((course) => (
       !plan[course.id]
       && (semesterFilter === 'all' || course.semesterFilters.includes(semesterFilter))
+      && (typeFilter === 'all' || course.type === typeFilter)
       && (!term || course.title.toLocaleLowerCase('el').includes(term))
     ))
-  }, [plan, search, semesterFilter])
+  }, [plan, search, semesterFilter, typeFilter])
   const totalEcts = selectedCourses.reduce((total, course) => total + course.ects, 0)
 
   function moveCourse(id, semester) {
@@ -267,6 +269,16 @@ export default function App() {
               <option value="winter">Χειμερινό εξάμηνο</option>
               <option value="spring">Εαρινό εξάμηνο</option>
               <option value="annual">Ετήσια μαθήματα</option>
+            </select>
+            <select
+              value={typeFilter}
+              onChange={(event) => setTypeFilter(event.target.value)}
+              aria-label="Φίλτρο τύπου μαθήματος"
+            >
+              <option value="all">Όλοι οι τύποι</option>
+              <option value="ΥΜ">Υποχρεωτικό</option>
+              <option value="ΕΥΜ">Κατ’ επιλογή υποχρεωτικό</option>
+              <option value="ΠΜ">Προαιρετικό</option>
             </select>
           </div>
           <div className="catalog">
